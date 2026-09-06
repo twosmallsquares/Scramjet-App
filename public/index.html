@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loop Unblocker</title>
+  <title>loop</title>
 
-  <!-- Scramjet -->
   <script src="/scram/scramjet.all.js"></script>
+
   <script src="/baremux/index.js"></script>
+
   <script src="register-sw.js" defer></script>
 
   <style>
@@ -29,60 +31,9 @@
     #app {
       width: 100%;
       height: 100%;
-      display: flex;
-    }
-
-    /* LEFT MENU */
-    #sidebar {
-      width: 230px;
-      min-width: 230px;
-      height: 100%;
-      background: #181818;
-      border-right: 1px solid #303030;
-      padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #logo {
-      font-size: 20px;
-      font-weight: 700;
-      padding: 10px 12px 25px;
-    }
-
-    .menu-button {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: #aaa;
-      text-align: left;
-      padding: 13px 14px;
-      margin-bottom: 5px;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-
-    .menu-button:hover {
-      background: #252525;
-      color: white;
-    }
-
-    .menu-button.active {
-      background: #303030;
-      color: white;
-    }
-
-    /* MAIN AREA */
-    #main {
-      flex: 1;
-      height: 100%;
       position: relative;
-      overflow: hidden;
     }
 
-    /* HOME */
     #home {
       width: 100%;
       height: 100%;
@@ -90,29 +41,48 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-bottom: 80px;
+      padding: 30px;
     }
 
-    #welcome {
-      font-size: 38px;
+    #logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    #logo h1 {
+      margin: 0;
+      font-size: 42px;
       font-weight: 700;
-      margin-bottom: 28px;
+      letter-spacing: -1px;
+    }
+
+    #description {
+      max-width: 650px;
+      text-align: center;
+      color: #aaa;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 30px;
     }
 
     #searchForm {
-      width: min(650px, 80%);
+      width: min(650px, 90%);
     }
 
     #searchBox {
       width: 100%;
       height: 52px;
       border: 1px solid #3a3a3a;
-      border-radius: 12px;
+      border-radius: 10px;
       outline: none;
       background: #1d1d1d;
       color: white;
       padding: 0 18px;
       font-size: 16px;
+      transition: border 0.15s;
     }
 
     #searchBox:focus {
@@ -123,17 +93,18 @@
       color: #777;
     }
 
-    /* BROWSER */
     #browser {
       width: 100%;
       height: 100%;
       display: none;
       flex-direction: column;
+      background: #111;
     }
 
     #toolbar {
-      height: 52px;
-      min-height: 52px;
+      width: 100%;
+      height: 54px;
+      min-height: 54px;
       background: #181818;
       border-bottom: 1px solid #303030;
       display: flex;
@@ -143,14 +114,19 @@
     }
 
     .toolbar-button {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border: 0;
-      border-radius: 7px;
+      border-radius: 8px;
       background: #252525;
       color: white;
       cursor: pointer;
-      font-size: 17px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      flex-shrink: 0;
     }
 
     .toolbar-button:hover {
@@ -159,18 +135,22 @@
 
     #addressBar {
       flex: 1;
-      height: 36px;
+      height: 38px;
       border: 1px solid #353535;
       border-radius: 8px;
       outline: none;
       background: #222;
       color: white;
-      padding: 0 12px;
+      padding: 0 13px;
       font-size: 14px;
     }
 
     #addressBar:focus {
       border-color: #555;
+    }
+
+    #addressBar::placeholder {
+      color: #777;
     }
 
     #frameContainer {
@@ -187,132 +167,156 @@
       display: block;
     }
   </style>
+
 </head>
 
 <body>
 
   <div id="app">
 
-    <!-- PERMANENT LEFT MENU -->
-    <aside id="sidebar">
+```
+<!-- LOOP HOME -->
+<section id="home">
 
-      <div id="logo">
-        Loop Unblocker
-      </div>
+  <div id="logo">
+    <h1>loop unblocker</h1>
+  </div>
 
-      <button class="menu-button active" id="browseButton">
-        Browsing
-      </button>
+  <div id="description">
+    <p>
+      a Scramjet based web proxy
+    </p>
+  </div>
 
-      <button class="menu-button" id="gamesButton">
-        Games
-      </button>
+  <form id="searchForm">
+    <input
+      id="searchBox"
+      type="text"
+      autocomplete="off"
+      placeholder="search or enter URL"
+    >
+  </form>
 
-      <button class="menu-button" id="animeButton">
-        Anime
-      </button>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-    <main id="main">
-
-      <!-- BROWSING HOME -->
-      <section id="home">
-
-        <div id="welcome">
-          Welcome to Loop
-        </div>
-
-        <form id="searchForm">
-          <input
-            id="searchBox"
-            type="text"
-            autocomplete="off"
-            placeholder="Search or enter URL..."
-          >
-        </form>
-
-      </section>
+</section>
 
 
-      <!-- SCRAMJET BROWSER -->
-      <section id="browser">
+<!-- BROWSER -->
+<section id="browser">
 
-        <div id="toolbar">
+  <div id="toolbar">
 
-          <button class="toolbar-button" id="backButton" title="Back">
-            ←
-          </button>
+    <!-- HOME -->
+    <button
+      class="toolbar-button"
+      id="homeButton"
+      title="Home"
+    >
+      ⌂
+    </button>
 
-          <button class="toolbar-button" id="forwardButton" title="Forward">
-            →
-          </button>
+    <!-- BACK -->
+    <button
+      class="toolbar-button"
+      id="backButton"
+      title="Back"
+    >
+      ←
+    </button>
 
-          <button class="toolbar-button" id="reloadButton" title="Reload">
-            ↻
-          </button>
+    <!-- FORWARD -->
+    <button
+      class="toolbar-button"
+      id="forwardButton"
+      title="Forward"
+    >
+      →
+    </button>
 
-          <input
-            id="addressBar"
-            type="text"
-            autocomplete="off"
-            placeholder="Search or enter URL..."
-          >
+    <!-- REFRESH -->
+    <button
+      class="toolbar-button"
+      id="reloadButton"
+      title="Refresh"
+    >
+      ↻
+    </button>
 
-        </div>
-
-        <div id="frameContainer"></div>
-
-      </section>
-
-    </main>
+    <!-- URL BAR -->
+    <input
+      id="addressBar"
+      type="text"
+      autocomplete="off"
+      placeholder="Enter URL or search..."
+    >
 
   </div>
 
+  <div id="frameContainer"></div>
+
+</section>
+```
+
+  </div>
 
   <script>
+
     /* =========================================
        SCRAMJET SETUP
     ========================================= */
 
-    const { ScramjetController } = $scramjetLoadController();
+    const { ScramjetController } =
+      $scramjetLoadController();
 
-    const scramjet = new ScramjetController({
-      files: {
-        wasm: "/scram/scramjet.wasm.wasm",
-        all: "/scram/scramjet.all.js",
-        sync: "/scram/scramjet.sync.js"
-      }
-    });
+    const scramjet =
+      new ScramjetController({
+        files: {
+          wasm: "/scram/scramjet.wasm.wasm",
+          all: "/scram/scramjet.all.js",
+          sync: "/scram/scramjet.sync.js"
+        }
+      });
 
     scramjet.init();
 
     const connection =
-      new BareMux.BareMuxConnection("/baremux/worker.js");
+      new BareMux.BareMuxConnection(
+        "/baremux/worker.js"
+      );
 
 
     /* =========================================
        ELEMENTS
     ========================================= */
 
-    const home = document.getElementById("home");
-    const browser = document.getElementById("browser");
+    const home =
+      document.getElementById("home");
 
-    const searchForm = document.getElementById("searchForm");
-    const searchBox = document.getElementById("searchBox");
+    const browser =
+      document.getElementById("browser");
 
-    const addressBar = document.getElementById("addressBar");
-    const frameContainer = document.getElementById("frameContainer");
+    const searchForm =
+      document.getElementById("searchForm");
 
-    const backButton = document.getElementById("backButton");
-    const forwardButton = document.getElementById("forwardButton");
-    const reloadButton = document.getElementById("reloadButton");
+    const searchBox =
+      document.getElementById("searchBox");
 
-    const browseButton = document.getElementById("browseButton");
-    const gamesButton = document.getElementById("gamesButton");
-    const animeButton = document.getElementById("animeButton");
+    const addressBar =
+      document.getElementById("addressBar");
+
+    const frameContainer =
+      document.getElementById("frameContainer");
+
+    const homeButton =
+      document.getElementById("homeButton");
+
+    const backButton =
+      document.getElementById("backButton");
+
+    const forwardButton =
+      document.getElementById("forwardButton");
+
+    const reloadButton =
+      document.getElementById("reloadButton");
 
 
     /* =========================================
@@ -320,11 +324,12 @@
     ========================================= */
 
     let scramFrame = null;
+
     let currentUrl = "";
 
 
     /* =========================================
-       PROXY CONNECTION
+       PROXY SETUP
     ========================================= */
 
     async function setupProxy() {
@@ -334,7 +339,9 @@
       }
 
       const wisp =
-        (location.protocol === "https:" ? "wss" : "ws") +
+        (location.protocol === "https:"
+          ? "wss"
+          : "ws") +
         "://" +
         location.host +
         "/wisp/";
@@ -343,16 +350,23 @@
         (await connection.getTransport()) !==
         "/libcurl/index.mjs"
       ) {
+
         await connection.setTransport(
           "/libcurl/index.mjs",
-          [{ websocket: wisp }]
+          [
+            {
+              websocket: wisp
+            }
+          ]
         );
+
       }
+
     }
 
 
     /* =========================================
-       TURN INPUT INTO URL
+       INPUT → URL
     ========================================= */
 
     function getUrl(input) {
@@ -363,19 +377,13 @@
         return null;
       }
 
-      /*
-        Already has a protocol
-      */
-      if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(input)) {
+      if (
+        /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//
+          .test(input)
+      ) {
         return input;
       }
 
-      /*
-        Looks like a normal website
-        Example:
-        google.com
-        youtube.com/watch?v=123
-      */
       if (
         input.includes(".") &&
         !input.includes(" ")
@@ -383,18 +391,16 @@
         return "https://" + input;
       }
 
-      /*
-        Otherwise search DuckDuckGo
-      */
       return (
         "https://duckduckgo.com/?q=" +
         encodeURIComponent(input)
       );
+
     }
 
 
     /* =========================================
-       OPEN WEBSITE THROUGH SCRAMJET
+       OPEN URL
     ========================================= */
 
     async function openUrl(input) {
@@ -409,42 +415,43 @@
 
         await setupProxy();
 
-        /*
-          Create ONE Scramjet frame.
-
-          There are NO tabs.
-        */
         if (!scramFrame) {
 
-          scramFrame = scramjet.createFrame();
+          scramFrame =
+            scramjet.createFrame();
 
-          const iframe = scramFrame.frame;
+          const iframe =
+            scramFrame.frame;
 
-          iframe.classList.add("scram-frame");
+          iframe.classList.add(
+            "scram-frame"
+          );
 
-          frameContainer.appendChild(iframe);
+          frameContainer.appendChild(
+            iframe
+          );
+
         }
 
         currentUrl = url;
 
         addressBar.value = url;
 
-        /*
-          Show browser area.
-        */
         home.style.display = "none";
+
         browser.style.display = "flex";
 
-        /*
-          Load through Scramjet.
-        */
         scramFrame.go(url);
 
       } catch (error) {
 
-        console.error("Failed to open URL:", error);
+        console.error(
+          "Failed to open URL:",
+          error
+        );
 
       }
+
     }
 
 
@@ -452,131 +459,137 @@
        HOME SEARCH
     ========================================= */
 
-    searchForm.addEventListener("submit", function(event) {
+    searchForm.addEventListener(
+      "submit",
+      function(event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      openUrl(searchBox.value);
+        openUrl(searchBox.value);
 
-    });
+      }
+    );
 
 
     /* =========================================
        ADDRESS BAR
     ========================================= */
 
-    addressBar.addEventListener("keydown", function(event) {
+    addressBar.addEventListener(
+      "keydown",
+      function(event) {
 
-      if (event.key === "Enter") {
+        if (event.key === "Enter") {
 
-        event.preventDefault();
+          event.preventDefault();
 
-        openUrl(addressBar.value);
+          openUrl(addressBar.value);
+
+        }
 
       }
+    );
 
-    });
+
+    /* =========================================
+       HOME BUTTON
+    ========================================= */
+
+    homeButton.addEventListener(
+      "click",
+      function() {
+
+        browser.style.display = "none";
+
+        home.style.display = "flex";
+
+        searchBox.value = "";
+
+        searchBox.focus();
+
+      }
+    );
 
 
     /* =========================================
        BACK
     ========================================= */
 
-    backButton.addEventListener("click", function() {
+    backButton.addEventListener(
+      "click",
+      function() {
 
-      if (!scramFrame) {
-        return;
+        if (!scramFrame) {
+          return;
+        }
+
+        try {
+
+          scramFrame.back();
+
+        } catch (error) {
+
+          console.error(error);
+
+        }
+
       }
-
-      try {
-        scramFrame.back();
-      } catch (error) {
-        console.error(error);
-      }
-
-    });
+    );
 
 
     /* =========================================
        FORWARD
     ========================================= */
 
-    forwardButton.addEventListener("click", function() {
+    forwardButton.addEventListener(
+      "click",
+      function() {
 
-      if (!scramFrame) {
-        return;
+        if (!scramFrame) {
+          return;
+        }
+
+        try {
+
+          scramFrame.forward();
+
+        } catch (error) {
+
+          console.error(error);
+
+        }
+
       }
-
-      try {
-        scramFrame.forward();
-      } catch (error) {
-        console.error(error);
-      }
-
-    });
+    );
 
 
     /* =========================================
-       RELOAD
+       REFRESH
     ========================================= */
 
-    reloadButton.addEventListener("click", function() {
+    reloadButton.addEventListener(
+      "click",
+      function() {
 
-      if (!scramFrame || !currentUrl) {
-        return;
+        if (
+          !scramFrame ||
+          !currentUrl
+        ) {
+          return;
+        }
+
+        try {
+
+          scramFrame.go(currentUrl);
+
+        } catch (error) {
+
+          console.error(error);
+
+        }
+
       }
-
-      try {
-        scramFrame.go(currentUrl);
-      } catch (error) {
-        console.error(error);
-      }
-
-    });
-
-
-    /* =========================================
-       SIDEBAR
-    ========================================= */
-
-    browseButton.addEventListener("click", function() {
-
-      browseButton.classList.add("active");
-      gamesButton.classList.remove("active");
-      animeButton.classList.remove("active");
-
-      /*
-        Browsing button returns to
-        the Loop homepage.
-      */
-      home.style.display = "flex";
-      browser.style.display = "none";
-
-      searchBox.focus();
-
-    });
-
-
-    gamesButton.addEventListener("click", function() {
-
-      /*
-        Games will eventually be:
-        /g.html
-      */
-      window.location.href = "/g.html";
-
-    });
-
-
-    animeButton.addEventListener("click", function() {
-
-      /*
-        Anime will eventually be:
-        /a.html
-      */
-      window.location.href = "/a.html";
-
-    });
+    );
 
 
     /* =========================================
